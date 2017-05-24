@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) Jupyter Development Team.
+Distributed under the terms of the Modified BSD License.
+-->
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block title %}{{page_title}}{% endblock %}</title>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.bootstrap.min.css" rel="stylesheet">
+  {% block stylesheet %}
+    {% for css_file in jupyterlab_css %}
+      <link href="{{ css_file }}" rel="stylesheet">
+    {% endfor %}
+  {% endblock %}
+
+  <script id="jupyter-config-data" type="application/json">{
+    {% for key, value in jupyterlab_config.items() -%}
+    "{{ key }}": "{{ value }}",
+    {% endfor -%}
+    "baseUrl": "{{base_url | urlencode}}",
+    "wsUrl": "{{ws_url | urlencode}}"
+  }</script>
+
+  {% block favicon %}<link rel="shortcut icon" type="image/x-icon" href="{{ base_url }}static/base/images/favicon.ico">{% endblock %}
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mockjax/1.6.2/jquery.mockjax.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.bootstrap.min.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+  <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+  <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+  <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+  <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+  <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js" type="text/javascript" charset="utf-8"></script>
+
+  <script>
+  {% for key, value in carme_config.items() -%}
+  var {{ key }} = {{ value|safe }};
+  {% endfor -%}
+  </script>
+
+  {% for bundle_file in jupyterlab_bundles %}
+  <script src="{{ bundle_file }}" type="text/javascript" charset="utf-8"></script>
+  {% endfor %}
+
+  {% if mathjax_url %}
+  <script type="text/javascript" src="{{mathjax_url}}?config={{mathjax_config}}&amp;delayStartupUntil=configured" charset="utf-8"></script>
+  {% endif %}
+
+  {% block meta %}
+  {% endblock %}
+
+</head>
+
+<body>
+
+{% block script %}
+<script>
+  var loader = jupyter.loader;
+  delete jupyter.loader;
+
+  var createLab = loader.require("{{ jupyterlab_main }}").createLab;
+  var lab = jupyter.lab = createLab(loader);
+  var plugins = [];
+
+  /**
+   * Get the plugins for an entry point.
+   */
+  var getEntryPoint = function (entryPoint) {
+    var plugins = loader.require(entryPoint);
+    try {
+      plugins = loader.extractPlugins(plugins);
+    } catch (err) {
+      console.error(err);
+      plugins = [];
+    }
+    return plugins;
+  }
+
+  {% for plugin_entry in plugin_entries %}
+  plugins = plugins.concat(getEntryPoint("{{ plugin_entry }}"));
+  {% endfor %}
+
+  lab.registerPlugins(plugins);
+  lab.start();
+</script>
+{% endblock %}
+
+<script type="text/javascript">
+  function _remove_token_from_url() {
+    if (window.location.search.length <= 1) {
+      return;
+    }
+    var search_parameters = window.location.search.slice(1).split('&');
+    for (var i = 0; i < search_parameters.length; i++) {
+      if (search_parameters[i].split('=')[0] === 'token') {
+        // remote token from search parameters
+        search_parameters.splice(i, 1);
+        var new_search = '';
+        if (search_parameters.length) {
+          new_search = '?' + search_parameters.join('&');
+        }
+        var new_url = window.location.origin +
+                      window.location.pathname +
+                      new_search +
+                      window.location.hash;
+        window.history.replaceState({}, "", new_url);
+        return;
+      }
+    }
+  }
+  _remove_token_from_url();
+</script>
+
+<!-- post script -->
+<script type="text/javascript">
+    $('#jp-main-dock-panel').css('background-color', bg_color);
+    $('#jp-MainMenu').css('background-color', bg_color);
+    $('#jp-top-panel').css('background-color', bg_color);
+</script>
+
+</body>
+
+</html>

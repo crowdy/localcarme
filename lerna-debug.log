@@ -1,0 +1,16 @@
+lerna(verbose) GitUtilities.isInitialized    ()
+lerna(verbose) GitUtilities.isInitialized    () => true
+lerna(verbose) GitUtilities.getTopLevelDirectory()
+lerna(verbose) GitUtilities.getTopLevelDirectory() => "c:/projectenv/carme"
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\lerna.json")
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\lerna.json") => false
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\package.json")
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\package.json") => true
+lerna(verbose) FileSystemUtilities.readFileSync("c:\\projectenv\\carme\\package.json")
+lerna(verbose) FileSystemUtilities.readFileSync("c:\\projectenv\\carme\\package.json") => "{\n  \"name\": \"carme\",\n  \"version\": \"0.1.1\",\n  \"description\": \"a jupyterlab extension\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\",\n    \"clean\": \"rimraf carme && rimraf jupyterlab\",\n    \"install\": \"node scripts/install.js\",\n    \"build:carme:lin:old\": \"npm run clean && git clone --depth=1 https://github.com/jupyterlab/jupyterlab && mkdir carme && gulp jupyterlab && gulp jupyterlab-extension && cd carme && npm install && npm run install && ln -s packages/test-xtension jupyterlab/node_modules/@jupyterlab/test-extension && npm run build\",\n    \"build:carme:win:old\": \"npm run clean && git clone --depth=1 https://github.com/jupyterlab/jupyterlab && mkdir carme && gulp jupyterlab && gulp jupyterlab-extension && cd carme && npm install && npm run install && mklink /J packages/test-xtension jupyterlab/node_modules/@jupyterlab/test-extension && npm run build\",\n    \"build:carme\": \"npm run clean && git clone --depth=1 https://github.com/jupyterlab/jupyterlab && mkdir carme && gulp jupyterlab && gulp jupyterlab-extension && cd carme && npm install && npm run install && npm run build\",\n    \"update:carme\": \"gulp jupyterlab-extension && cd carme && npm run build\",\n    \"run:carme\": \"python carme/run.py\"\n  },\n  \"author\": \"tonghyun kim\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"gulp\": \"^3.9.1\",\n    \"gulp-ignore\": \"^2.0.2\"\n  }\n}"
+lerna(info)    Lerna v2.0.0-beta.38
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\package.json")
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\package.json") => true
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\lerna.json")
+lerna(verbose) FileSystemUtilities.existsSync("c:\\projectenv\\carme\\lerna.json") => false
+lerna(warn)    `lerna.json` does not exist, have you run `lerna init`?

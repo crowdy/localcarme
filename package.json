@@ -1,0 +1,26 @@
+{
+  "name": "carme",
+  "version": "0.1.1",
+  "description": "a jupyterlab extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf jupyterlab-org && rimraf jupyterlab",
+    "install": "node scripts/install.js",
+    "clone-jupyterlab": "node scripts/clone-jupyterlab.js",
+    "build:carme:lin:old": "npm run clean && git clone https://github.com/jupyterlab/jupyterlab jupyterlab-org && mkdir carme && gulp jupyterlab && gulp jupyterlab-extension && cd carme && npm install && npm run install && ln -s packages/test-extension jupyterlab/node_modules/@jupyterlab/test-extension && npm run build",
+    "build:carme:win:old": "npm run clean && git clone https://github.com/jupyterlab/jupyterlab jupyterlab-org && mkdir carme && gulp jupyterlab && gulp jupyterlab-extension && cd carme && npm install && npm run install && mklink /J packages/test-extension jupyterlab/node_modules/@jupyterlab/test-extension && npm run build",
+    "build:carme1": "npm run clean && git clone https://github.com/jupyterlab/jupyterlab jupyterlab-org && mkdir carme && gulp jupyterlab && gulp jupyterlab-extension && cd carme && npm run install && npm run build",
+    "build:carme": "npm run clean && node scripts/clone-jupyterlab.js && mkdir jupyterlab && gulp jupyterlab && gulp jupyterlab-extension && cd jupyterlab && npm update && npm run install && npm run build",
+    "update:carme": "gulp jupyterlab-extension && npm update && cd jupyterlab && npm run install && npm run build",
+    "run:carme": "python3 jupyterlab/run.py",
+    "run_without_auth:carme": "python3 jupyterlab/run_without_auth.py",
+    "run:carme_auth": "sh jupyterlab/carmeauth/run.sh"
+  },
+  "author": "tonghyun kim",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-ignore": "^2.0.2"
+  }
+}
